@@ -1,522 +1,108 @@
-// Sample flashcards data with English-Hindi-Telugu translations
-export const sampleFlashcards = [
-  // Basic Greetings
-  {
-    id: 1,
-    front: { word: "Hello", language: "English" },
-    back: { word: "नमस्ते / హలో", language: "Hindi / Telugu", pronunciation: "Namaste / Halo" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 2,
-    front: { word: "Thank you", language: "English" },
-    back: { word: "धन्यवाद / ధన్యవాదాలు", language: "Hindi / Telugu", pronunciation: "Dhanyawad / Dhanyawadalu" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 3,
-    front: { word: "Good morning", language: "English" },
-    back: { word: "सुप्रभात / శుభోదయం", language: "Hindi / Telugu", pronunciation: "Suprabhat / Shubhodayam" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 4,
-    front: { word: "Good evening", language: "English" },
-    back: { word: "शुभ संध्या / శుభ సాయంత్రం", language: "Hindi / Telugu", pronunciation: "Shubh Sandhya / Shubha Sayantram" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 5,
-    front: { word: "Goodbye", language: "English" },
-    back: { word: "अलविदा / వీడ్కోలు", language: "Hindi / Telugu", pronunciation: "Alvida / Veedkolu" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
+// Reworked multilingual dataset.
+// Each entry contains translations for English (en), Hindi (hi), Telugu (te).
+// Pronunciations (where helpful) provided per target language.
+// This base list is intentionally larger to expand learning content.
+export const multilingualBase = [
+  // Basic greetings & common
+  { id: 1,  category: 'greeting', en: 'Hello',        hi: 'नमस्ते',         te: 'హలో',        pronunciation: { hi: 'Namaste', te: 'Halo' } },
+  { id: 2,  category: 'greeting', en: 'Thank you',    hi: 'धन्यवाद',       te: 'ధన్యవాదాలు', pronunciation: { hi: 'Dhanyavaad', te: 'Dhanyavaadaalu' } },
+  { id: 3,  category: 'greeting', en: 'Good morning', hi: 'सुप्रभात',       te: 'శుభోదయం',    pronunciation: { hi: 'Suprabhaat', te: 'Shubhodayam' } },
+  { id: 4,  category: 'greeting', en: 'Good evening', hi: 'शुभ संध्या',     te: 'శుభ సాయంత్రం', pronunciation: { hi: 'Shubh Sandhya', te: 'Shubha Saayantram' } },
+  { id: 5,  category: 'greeting', en: 'Goodbye',      hi: 'अलविदा',         te: 'వీడ్కోలు',    pronunciation: { hi: 'Alvida', te: 'Veedkolu' } },
+  { id: 6,  category: 'greeting', en: 'Please',       hi: 'कृपया',          te: 'దయచేసి',     pronunciation: { hi: 'Kripaya', te: 'Dayachesi' } },
+  { id: 7,  category: 'greeting', en: 'Sorry',        hi: 'क्षमा करें',      te: 'క్షమించండి', pronunciation: { hi: 'Kshama Karen', te: 'Kshaminchandi' } },
+  { id: 8,  category: 'greeting', en: 'Welcome',      hi: 'स्वागत है',       te: 'స్వాగతం',    pronunciation: { hi: 'Swagat hai', te: 'Swaagatam' } },
 
-  // Basic Nouns
-  {
-    id: 6,
-    front: { word: "Water", language: "English" },
-    back: { word: "पानी / నీళ్ళు", language: "Hindi / Telugu", pronunciation: "Paani / Neellu" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 7,
-    front: { word: "Food", language: "English" },
-    back: { word: "भोजन / ఆహారం", language: "Hindi / Telugu", pronunciation: "Bhojan / Aaharam" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 8,
-    front: { word: "Book", language: "English" },
-    back: { word: "किताब / పుస్తకం", language: "Hindi / Telugu", pronunciation: "Kitaab / Pustakam" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 9,
-    front: { word: "House", language: "English" },
-    back: { word: "घर / ఇల్లు", language: "Hindi / Telugu", pronunciation: "Ghar / Illu" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 10,
-    front: { word: "Car", language: "English" },
-    back: { word: "कार / కారు", language: "Hindi / Telugu", pronunciation: "Car / Kaaru" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
+  // People & relations
+  { id: 21, category: 'people', en: 'Mother', hi: 'माँ',      te: 'అమ్మ',      pronunciation: { hi: 'Maa', te: 'Amma' } },
+  { id: 22, category: 'people', en: 'Father', hi: 'पिता',     te: 'నాన్న',     pronunciation: { hi: 'Pita', te: 'Nanna' } },
+  { id: 23, category: 'people', en: 'Brother',hi: 'भाई',      te: 'అన్న / తమ్ముడు', pronunciation: { hi: 'Bhaai', te: 'Anna / Tammudu' } },
+  { id: 24, category: 'people', en: 'Sister', hi: 'बहन',      te: 'అక్క / చెల్లి', pronunciation: { hi: 'Behan', te: 'Akka / Chelli' } },
+  { id: 25, category: 'people', en: 'Friend', hi: 'दोस्त',    te: 'స్నేహితుడు', pronunciation: { hi: 'Dost', te: 'Snehitudu' } },
+  { id: 26, category: 'people', en: 'Family', hi: 'परिवार',  te: 'కుటుంబం',   pronunciation: { hi: 'Parivaar', te: 'Kutumbam' } },
 
-  // People & Relationships
-  {
-    id: 11,
-    front: { word: "Friend", language: "English" },
-    back: { word: "दोस्त / స్నేహితుడు", language: "Hindi / Telugu", pronunciation: "Dost / Snehitudu" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 12,
-    front: { word: "Family", language: "English" },
-    back: { word: "परिवार / కుటుంబం", language: "Hindi / Telugu", pronunciation: "Parivar / Kutumbam" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 13,
-    front: { word: "Mother", language: "English" },
-    back: { word: "माता / అమ్మ", language: "Hindi / Telugu", pronunciation: "Mata / Amma" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 14,
-    front: { word: "Father", language: "English" },
-    back: { word: "पिता / నాన्ना", language: "Hindi / Telugu", pronunciation: "Pita / Nanna" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 15,
-    front: { word: "Brother", language: "English" },
-    back: { word: "भाई / అన्ना/तम्मुडु", language: "Hindi / Telugu", pronunciation: "Bhai / Anna/Tammudu" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-
-  // Emotions & Adjectives
-  {
-    id: 16,
-    front: { word: "Love", language: "English" },
-    back: { word: "प्रेम / ప్రేమ", language: "Hindi / Telugu", pronunciation: "Prem / Prema" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 17,
-    front: { word: "Happy", language: "English" },
-    back: { word: "खुश / సంతోషం", language: "Hindi / Telugu", pronunciation: "Khush / Santosham" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 18,
-    front: { word: "Beautiful", language: "English" },
-    back: { word: "सुंदर / అందం", language: "Hindi / Telugu", pronunciation: "Sundar / Andham" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 19,
-    front: { word: "Good", language: "English" },
-    back: { word: "अच्छा / మంచి", language: "Hindi / Telugu", pronunciation: "Achha / Manchi" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 20,
-    front: { word: "Bad", language: "English" },
-    back: { word: "बुरा / చెడు", language: "Hindi / Telugu", pronunciation: "Bura / Chedu" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-
-  // Time & Numbers
-  {
-    id: 21,
-    front: { word: "Time", language: "English" },
-    back: { word: "समय / సమయం", language: "Hindi / Telugu", pronunciation: "Samay / Samayam" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 22,
-    front: { word: "Today", language: "English" },
-    back: { word: "आज / ఈరోజు", language: "Hindi / Telugu", pronunciation: "Aaj / Eeroju" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 23,
-    front: { word: "Tomorrow", language: "English" },
-    back: { word: "कल / రేపు", language: "Hindi / Telugu", pronunciation: "Kal / Repu" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 24,
-    front: { word: "One", language: "English" },
-    back: { word: "एक / ఒకటి", language: "Hindi / Telugu", pronunciation: "Ek / Okati" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 25,
-    front: { word: "Two", language: "English" },
-    back: { word: "दो / రెండు", language: "Hindi / Telugu", pronunciation: "Do / Rendu" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-
-  // Common Objects
-  {
-    id: 26,
-    front: { word: "Money", language: "English" },
-    back: { word: "पैसा / డబ్బు", language: "Hindi / Telugu", pronunciation: "Paisa / Dabbu" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 27,
-    front: { word: "School", language: "English" },
-    back: { word: "स्कूल / పాఠశాల", language: "Hindi / Telugu", pronunciation: "School / Paathashala" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 28,
-    front: { word: "Work", language: "English" },
-    back: { word: "काम / పని", language: "Hindi / Telugu", pronunciation: "Kaam / Pani" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 29,
-    front: { word: "Phone", language: "English" },
-    back: { word: "फोन / ఫోన్", language: "Hindi / Telugu", pronunciation: "Phone / Phone" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 30,
-    front: { word: "Computer", language: "English" },
-    back: { word: "कंप्यूटर / కంప్యూటర్", language: "Hindi / Telugu", pronunciation: "Computer / Computer" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
+  // Basic nouns
+  { id: 41, category: 'noun', en: 'Water',    hi: 'पानी',     te: 'నీళ్ళు',    pronunciation: { hi: 'Paani', te: 'Neellu' } },
+  { id: 42, category: 'noun', en: 'Food',     hi: 'भोजन',     te: 'ఆహారం',     pronunciation: { hi: 'Bhojan', te: 'Aahaaram' } },
+  { id: 43, category: 'noun', en: 'Book',     hi: 'किताब',    te: 'పుస్తకం',   pronunciation: { hi: 'Kitaab', te: 'Pustakam' } },
+  { id: 44, category: 'noun', en: 'House',    hi: 'घर',       te: 'ఇల్లు',     pronunciation: { hi: 'Ghar', te: 'Illu' } },
+  { id: 45, category: 'noun', en: 'Car',      hi: 'कार',      te: 'కారు',      pronunciation: { hi: 'Kaar', te: 'Kaaru' } },
+  { id: 46, category: 'noun', en: 'School',   hi: 'स्कूल',     te: 'పాఠశాల',    pronunciation: { hi: 'School', te: 'Paathashaala' } },
+  { id: 47, category: 'noun', en: 'Phone',    hi: 'फ़ोन',      te: 'ఫోన్',       pronunciation: { hi: 'Phone', te: 'Phone' } },
+  { id: 48, category: 'noun', en: 'Computer', hi: 'कंप्यूटर',  te: 'కంప్యూటర్', pronunciation: { hi: 'Computer', te: 'Computer' } },
+  { id: 49, category: 'noun', en: 'Money',    hi: 'पैसा',     te: 'డబ్బు',      pronunciation: { hi: 'Paisa', te: 'Dabbu' } },
 
   // Colors
-  {
-    id: 31,
-    front: { word: "Red", language: "English" },
-    back: { word: "लाल / ఎరుపు", language: "Hindi / Telugu", pronunciation: "Laal / Erupu" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 32,
-    front: { word: "Blue", language: "English" },
-    back: { word: "नीला / నీలం", language: "Hindi / Telugu", pronunciation: "Neela / Neelam" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 33,
-    front: { word: "Green", language: "English" },
-    back: { word: "हरा / పచ్చ", language: "Hindi / Telugu", pronunciation: "Hara / Pachcha" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 34,
-    front: { word: "Yellow", language: "English" },
-    back: { word: "पीला / పసుపు", language: "Hindi / Telugu", pronunciation: "Peela / Pasupu" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 35,
-    front: { word: "Black", language: "English" },
-    back: { word: "काला / నలుపు", language: "Hindi / Telugu", pronunciation: "Kaala / Nalupu" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
+  { id: 61, category: 'color', en: 'Red',    hi: 'लाल',    te: 'ఎరుపు',    pronunciation: { hi: 'Laal', te: 'Erupu' } },
+  { id: 62, category: 'color', en: 'Blue',   hi: 'नीला',   te: 'నీలం',      pronunciation: { hi: 'Neela', te: 'Neelam' } },
+  { id: 63, category: 'color', en: 'Green',  hi: 'हरा',    te: 'పచ్చ',      pronunciation: { hi: 'Haraa', te: 'Pachcha' } },
+  { id: 64, category: 'color', en: 'Yellow', hi: 'पीला',   te: 'పసుపు',     pronunciation: { hi: 'Peela', te: 'Pasupu' } },
+  { id: 65, category: 'color', en: 'Black',  hi: 'काला',   te: 'నలుపు',     pronunciation: { hi: 'Kaala', te: 'Nalupu' } },
+  { id: 66, category: 'color', en: 'White',  hi: 'सफेद',   te: 'తెలుపు',     pronunciation: { hi: 'Safed', te: 'Telupu' } },
+  { id: 67, category: 'color', en: 'Orange', hi: 'नारंगी',  te: 'నారింజ',    pronunciation: { hi: 'Narangee', te: 'Narinja' } },
 
   // Body Parts
-  {
-    id: 36,
-    front: { word: "Head", language: "English" },
-    back: { word: "सिर / తల", language: "Hindi / Telugu", pronunciation: "Sir / Tala" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 37,
-    front: { word: "Hand", language: "English" },
-    back: { word: "हाथ / చేయి", language: "Hindi / Telugu", pronunciation: "Haath / Cheyi" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 38,
-    front: { word: "Eye", language: "English" },
-    back: { word: "आंख / కన్ను", language: "Hindi / Telugu", pronunciation: "Aankh / Kannu" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 39,
-    front: { word: "Mouth", language: "English" },
-    back: { word: "मुंह / నోరు", language: "Hindi / Telugu", pronunciation: "Munh / Noru" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 40,
-    front: { word: "Nose", language: "English" },
-    back: { word: "नाक / ముక్కు", language: "Hindi / Telugu", pronunciation: "Naak / Mukku" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
+  { id: 81, category: 'body', en: 'Head',  hi: 'सिर',  te: 'తల',   pronunciation: { hi: 'Sir', te: 'Tala' } },
+  { id: 82, category: 'body', en: 'Hand',  hi: 'हाथ',  te: 'చేయి', pronunciation: { hi: 'Haath', te: 'Cheyi' } },
+  { id: 83, category: 'body', en: 'Eye',   hi: 'आंख',  te: 'కన్ను', pronunciation: { hi: 'Aankh', te: 'Kannu' } },
+  { id: 84, category: 'body', en: 'Mouth', hi: 'मुंह',  te: 'నోరు', pronunciation: { hi: 'Munh', te: 'Noru' } },
+  { id: 85, category: 'body', en: 'Nose',  hi: 'नाक',   te: 'ముక్కు', pronunciation: { hi: 'Naak', te: 'Mukku' } },
 
   // Animals
-  {
-    id: 41,
-    front: { word: "Dog", language: "English" },
-    back: { word: "कुत्ता / కుక్క", language: "Hindi / Telugu", pronunciation: "Kutta / Kukka" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 42,
-    front: { word: "Cat", language: "English" },
-    back: { word: "बिल्ली / పిల్లి", language: "Hindi / Telugu", pronunciation: "Billi / Pilli" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 43,
-    front: { word: "Cow", language: "English" },
-    back: { word: "गाय / ఆవు", language: "Hindi / Telugu", pronunciation: "Gaay / Aavu" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 44,
-    front: { word: "Bird", language: "English" },
-    back: { word: "पक्षी / పక్షి", language: "Hindi / Telugu", pronunciation: "Pakshi / Pakshi" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 45,
-    front: { word: "Fish", language: "English" },
-    back: { word: "मछली / చేప", language: "Hindi / Telugu", pronunciation: "Machhli / Chepa" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
+  { id: 101, category: 'animal', en: 'Dog',  hi: 'कुत्ता', te: 'కుక్క', pronunciation: { hi: 'Kuttaa', te: 'Kukka' } },
+  { id: 102, category: 'animal', en: 'Cat',  hi: 'बिल्ली', te: 'పిల్లి', pronunciation: { hi: 'Billi', te: 'Pilli' } },
+  { id: 103, category: 'animal', en: 'Cow',  hi: 'गाय',    te: 'ఆవు', pronunciation: { hi: 'Gaay', te: 'Aavu' } },
+  { id: 104, category: 'animal', en: 'Bird', hi: 'पक्षी',  te: 'పక్షి', pronunciation: { hi: 'Pakshi', te: 'Pakshi' } },
+  { id: 105, category: 'animal', en: 'Fish', hi: 'मछली',  te: 'చేప', pronunciation: { hi: 'Machhli', te: 'Chepa' } },
 
   // Food Items
-  {
-    id: 46,
-    front: { word: "Rice", language: "English" },
-    back: { word: "चावल / అన్నం", language: "Hindi / Telugu", pronunciation: "Chawal / Annam" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 47,
-    front: { word: "Bread", language: "English" },
-    back: { word: "रोटी / రొట్టె", language: "Hindi / Telugu", pronunciation: "Roti / Rotte" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 48,
-    front: { word: "Milk", language: "English" },
-    back: { word: "दूध / పాలు", language: "Hindi / Telugu", pronunciation: "Doodh / Paalu" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 49,
-    front: { word: "Tea", language: "English" },
-    back: { word: "चाय / టీ", language: "Hindi / Telugu", pronunciation: "Chai / Tea" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  },
-  {
-    id: 50,
-    front: { word: "Coffee", language: "English" },
-    back: { word: "कॉफी / కాఫీ", language: "Hindi / Telugu", pronunciation: "Coffee / Coffee" },
-    difficulty: 1,
-    lastReviewed: null,
-    nextReview: new Date(),
-    correctCount: 0,
-    incorrectCount: 0
-  }
+  { id: 121, category: 'food', en: 'Rice',    hi: 'चावल',  te: 'అన్నం', pronunciation: { hi: 'Chaawal', te: 'Annam' } },
+  { id: 122, category: 'food', en: 'Bread',   hi: 'रोटी',  te: 'రొట్టె', pronunciation: { hi: 'Roti', te: 'Rotte' } },
+  { id: 123, category: 'food', en: 'Milk',    hi: 'दूध',   te: 'పాలు', pronunciation: { hi: 'Doodh', te: 'Paalu' } },
+  { id: 124, category: 'food', en: 'Tea',     hi: 'चाय',   te: 'టీ', pronunciation: { hi: 'Chaay', te: 'Tea' } },
+  { id: 125, category: 'food', en: 'Coffee',  hi: 'कॉफ़ी', te: 'కాఫీ', pronunciation: { hi: 'Coffee', te: 'Coffee' } },
+  { id: 126, category: 'food', en: 'Sugar',   hi: 'चीनी',  te: 'చక్కెర', pronunciation: { hi: 'Cheenee', te: 'Chakkera' } },
+  { id: 127, category: 'food', en: 'Salt',    hi: 'नमक',   te: 'ఉప్పు', pronunciation: { hi: 'Namak', te: 'Uppu' } },
+  { id: 128, category: 'food', en: 'Spice',   hi: 'मसाला', te: 'మసాలా', pronunciation: { hi: 'Masaala', te: 'Masaala' } },
+  { id: 129, category: 'food', en: 'Oil',     hi: 'तेल',    te: 'నూనె', pronunciation: { hi: 'Tel', te: 'Noone' } },
+
+  // Time & numbers (subset)
+  { id: 141, category: 'time', en: 'Today',    hi: 'आज',   te: 'ఈరోజు', pronunciation: { hi: 'Aaj', te: 'Eeroju' } },
+  { id: 142, category: 'time', en: 'Tomorrow', hi: 'कल',   te: 'రేపు', pronunciation: { hi: 'Kal', te: 'Repu' } },
+  { id: 143, category: 'time', en: 'Time',     hi: 'समय',  te: 'సమయం', pronunciation: { hi: 'Samay', te: 'Samayam' } },
+  { id: 144, category: 'number', en: 'One',    hi: 'एक',   te: 'ఒకటి', pronunciation: { hi: 'Ek', te: 'Okati' } },
+  { id: 145, category: 'number', en: 'Two',    hi: 'दो',   te: 'రెండు', pronunciation: { hi: 'Do', te: 'Rendu' } },
+  { id: 146, category: 'number', en: 'Three',  hi: 'तीन',  te: 'మూడు', pronunciation: { hi: 'Teen', te: 'Moodu' } },
+  { id: 147, category: 'number', en: 'Four',   hi: 'चार',  te: 'నాలుగు', pronunciation: { hi: 'Chaar', te: 'Naalugu' } },
+  { id: 148, category: 'number', en: 'Five',   hi: 'पाँच', te: 'ఐదు', pronunciation: { hi: 'Paanch', te: 'Aidu' } },
+  { id: 149, category: 'number', en: 'Ten',    hi: 'दस',   te: 'పది', pronunciation: { hi: 'Das', te: 'Padi' } },
 ];
+
+// Supported language codes mapped to display names
+export const LANGUAGE_LABELS = {
+  en: 'English',
+  hi: 'Hindi',
+  te: 'Telugu'
+};
+
+// Generate directional flashcards from base list according to selected source & target languages.
+export const generateDirectionalCards = (from, to) => {
+  if (from === to) return [];
+  return multilingualBase.map(base => ({
+    id: `${base.id}-${from}-${to}`,
+    baseId: base.id,
+    category: base.category,
+    from,
+    to,
+    front: { word: base[from], language: LANGUAGE_LABELS[from] },
+    back: { word: base[to], language: LANGUAGE_LABELS[to], pronunciation: base.pronunciation?.[to] },
+    difficulty: 1,
+    lastReviewed: null,
+    nextReview: new Date(),
+    correctCount: 0,
+    incorrectCount: 0
+  }));
+};
+
+// Backwards compatibility: sampleFlashcards alias (default English -> Hindi) for any older code paths.
+export const sampleFlashcards = generateDirectionalCards('en', 'hi');

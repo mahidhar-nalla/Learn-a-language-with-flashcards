@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Flashcard from './Flashcard';
 import { saveData, loadData } from '../utils/dataManager';
-import { sampleFlashcards } from '../utils/flashcardsData';
+import { generateDirectionalCards, LANGUAGE_LABELS } from '../utils/flashcardsData';
 import { getCardsForReview, updateCardProgress } from '../utils/spacedRepetition';
 
 const FlashcardManager = ({ onModeChange }) => {
   const [flashcards, setFlashcards] = useState([]);
+  const [fromLang, setFromLang] = useState('en');
+  const [toLang, setToLang] = useState('hi');
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [reviewCards, setReviewCards] = useState([]);
@@ -13,16 +15,31 @@ const FlashcardManager = ({ onModeChange }) => {
 
   useEffect(() => {
     // Load flashcards from localStorage or use sample data
-    const savedCards = loadData('flashcards');
-    if (savedCards && savedCards.length > 0) {
-      setFlashcards(savedCards);
-      setReviewCards(getCardsForReview(savedCards));
-    } else {
-      setFlashcards(sampleFlashcards);
-      setReviewCards(getCardsForReview(sampleFlashcards));
-      saveData('flashcards', sampleFlashcards);
-    }
+    // Load language prefs
+    const storedFrom = loadData('lang_from');
+    const storedTo = loadData('lang_to');
+    if (storedFrom) setFromLang(storedFrom);
+    if (storedTo) setToLang(storedTo);
   }, []);
+
+  useEffect(() => {
+    if (fromLang === toLang) return;
+    const storageKey = `flashcards_${fromLang}_${toLang}`;
+    const savedCards = loadData(storageKey);
+    let cards;
+    if (savedCards && savedCards.length > 0) {
+      cards = savedCards.map(c => ({ ...c, nextReview: c.nextReview ? new Date(c.nextReview) : new Date() }));
+    } else {
+      cards = generateDirectionalCards(fromLang, toLang);
+      saveData(storageKey, cards);
+    }
+    setFlashcards(cards);
+    setReviewCards(getCardsForReview(cards));
+    setCurrentCardIndex(0);
+    setIsFlipped(false);
+    saveData('lang_from', fromLang);
+    saveData('lang_to', toLang);
+  }, [fromLang, toLang]);
 
   const handleFlip = () => {
     setIsFlipped(!isFlipped);
@@ -33,12 +50,10 @@ const FlashcardManager = ({ onModeChange }) => {
     const updatedCard = updateCardProgress(currentCard, performance);
     
     // Update the card in the main flashcards array
-    const updatedFlashcards = flashcards.map(card => 
-      card.id === updatedCard.id ? updatedCard : card
-    );
+  const updatedFlashcards = flashcards.map(card => card.id === updatedCard.id ? updatedCard : card);
     
     setFlashcards(updatedFlashcards);
-    saveData('flashcards', updatedFlashcards);
+  saveData(`flashcards_${fromLang}_${toLang}` , updatedFlashcards);
     
     // Move to next card or finish review
     if (currentCardIndex < reviewCards.length - 1) {
@@ -46,7 +61,7 @@ const FlashcardManager = ({ onModeChange }) => {
       setIsFlipped(false);
     } else {
       // Review session complete
-      alert('Review session complete! Great job!');
+  alert('Review session complete! Great job!');
       setCurrentCardIndex(0);
       setReviewCards(getCardsForReview(updatedFlashcards));
       setIsFlipped(false);
@@ -54,18 +69,11 @@ const FlashcardManager = ({ onModeChange }) => {
   };
 
   const resetProgress = () => {
-    const resetCards = sampleFlashcards.map(card => ({
-      ...card,
-      lastReviewed: null,
-      nextReview: new Date(),
-      correctCount: 0,
-      incorrectCount: 0,
-      difficulty: 1
-    }));
+  const resetCards = generateDirectionalCards(fromLang, toLang);
     
     setFlashcards(resetCards);
     setReviewCards(getCardsForReview(resetCards));
-    saveData('flashcards', resetCards);
+  saveData(`flashcards_${fromLang}_${toLang}`, resetCards);
     setCurrentCardIndex(0);
     setIsFlipped(false);
   };
@@ -73,8 +81,17 @@ const FlashcardManager = ({ onModeChange }) => {
   if (reviewCards.length === 0) {
     return (
       <div style={{ textAlign: 'center', padding: '40px', color: 'white' }}>
-        <h2>No cards due for review!</h2>
-        <p>Come back later or reset your progress to practice again.</p>
+        {fromLang === toLang ? (
+          <>
+            <h2 style={{ marginTop: 0 }}>Select two different languages</h2>
+            <p style={{ opacity: .85 }}>Language pair cannot be the same. Choose distinct source and target above.</p>
+          </>
+        ) : (
+          <>
+            <h2 style={{ marginTop: 0 }}>No cards due</h2>
+            <p style={{ opacity: .85 }}>Great job! All {flashcards.length} cards are scheduled for later review.</p>
+          </>
+        )}
         <button className="btn btn-primary" onClick={resetProgress} style={{ marginRight: '10px' }}>
           Reset Progress
         </button>
@@ -89,9 +106,31 @@ const FlashcardManager = ({ onModeChange }) => {
   const progress = ((currentCardIndex + 1) / reviewCards.length) * 100;
 
   return (
-    <div style={{ textAlign: 'center', color: 'white', padding: '20px' }}>
+    <div style={{ textAlign: 'center', color: 'white', padding: '20px', maxWidth: '760px', margin: '0 auto' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px', flexWrap: 'wrap', marginBottom: '20px' }}>
+        <div style={{ flex: '1 1 160px' }}>
+          <label htmlFor="fromLang" style={{ fontSize: '12px', letterSpacing: '1px', textTransform: 'uppercase', opacity: 0.8, display: 'block', marginBottom: 4 }}>From</label>
+          <select id="fromLang" aria-label="Source language" value={fromLang} onChange={e => setFromLang(e.target.value)} style={selectStyle}>
+            {Object.entries(LANGUAGE_LABELS).map(([code, label]) => (
+              <option key={code} value={code}>{label}</option>
+            ))}
+          </select>
+        </div>
+        <div style={{ alignSelf: 'center', fontSize: '24px', marginTop: '20px' }}>→</div>
+        <div style={{ flex: '1 1 160px' }}>
+          <label htmlFor="toLang" style={{ fontSize: '12px', letterSpacing: '1px', textTransform: 'uppercase', opacity: 0.8, display: 'block', marginBottom: 4 }}>To</label>
+          <select id="toLang" aria-label="Target language" value={toLang} onChange={e => setToLang(e.target.value)} style={selectStyle}>
+            {Object.entries(LANGUAGE_LABELS).map(([code, label]) => (
+              <option key={code} value={code}>{label}</option>
+            ))}
+          </select>
+        </div>
+        <div style={{ flex: '1 1 100%', textAlign: 'right' }}>
+          <button className="btn btn-primary" onClick={() => onModeChange('home')} style={{ marginTop: '10px' }}>Home</button>
+        </div>
+      </div>
       <div style={{ marginBottom: '20px' }}>
-        <h2>Flashcard Review</h2>
+        <h2 style={{ margin: '0 0 10px', fontWeight: '600' }}>Flashcards ({LANGUAGE_LABELS[fromLang]} → {LANGUAGE_LABELS[toLang]})</h2>
         <div style={{ marginBottom: '10px' }}>
           Card {currentCardIndex + 1} of {reviewCards.length}
         </div>
@@ -155,7 +194,7 @@ const FlashcardManager = ({ onModeChange }) => {
         </div>
       )}
 
-      <div style={{ marginTop: '30px' }}>
+  <div style={{ marginTop: '30px' }}>
         <button 
           className="btn btn-primary" 
           onClick={() => setShowStats(!showStats)}
@@ -178,11 +217,11 @@ const FlashcardManager = ({ onModeChange }) => {
           margin: '20px auto'
         }}>
           <h3>Your Progress</h3>
-          <p>Total Cards: {flashcards.length}</p>
-          <p>Cards Due: {reviewCards.length}</p>
-          <p>Cards Mastered: {flashcards.filter(card => card.difficulty >= 4).length}</p>
-          <p>Total Correct: {flashcards.reduce((sum, card) => sum + card.correctCount, 0)}</p>
-          <p>Total Incorrect: {flashcards.reduce((sum, card) => sum + card.incorrectCount, 0)}</p>
+          <p style={statLine}>Total Cards: <strong>{flashcards.length}</strong></p>
+          <p style={statLine}>Cards Due: <strong>{reviewCards.length}</strong></p>
+          <p style={statLine}>Mastered: <strong>{flashcards.filter(card => card.difficulty >= 4).length}</strong></p>
+          <p style={statLine}>Correct: <strong>{flashcards.reduce((sum, card) => sum + card.correctCount, 0)}</strong></p>
+            <p style={statLine}>Incorrect: <strong>{flashcards.reduce((sum, card) => sum + card.incorrectCount, 0)}</strong></p>
         </div>
       )}
     </div>
@@ -190,3 +229,19 @@ const FlashcardManager = ({ onModeChange }) => {
 };
 
 export default FlashcardManager;
+
+// Inline styles
+const selectStyle = {
+  width: '100%',
+  padding: '10px 14px',
+  borderRadius: '8px',
+  border: '1px solid rgba(255,255,255,0.3)',
+  background: 'rgba(255,255,255,0.1)',
+  color: 'white',
+  fontSize: '14px',
+  backdropFilter: 'blur(6px)'
+};
+
+const statLine = { margin: '4px 0', fontSize: '14px', opacity: 0.9 };
+
+

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import FlashcardManager from './components/FlashcardManager';
 import Quiz from './components/Quiz';
 import { loadData } from './utils/dataManager';
-import { sampleFlashcards } from './utils/flashcardsData';
+import { generateDirectionalCards, LANGUAGE_LABELS } from './utils/flashcardsData';
 
 const App = () => {
   const [currentMode, setCurrentMode] = useState('home'); // 'home', 'flashcards', 'quiz'
@@ -17,8 +17,11 @@ const App = () => {
   };
 
   const getFlashcards = () => {
-    const savedCards = loadData('flashcards');
-    return savedCards && savedCards.length > 0 ? savedCards : sampleFlashcards;
+    const from = loadData('lang_from') || 'en';
+    const to = loadData('lang_to') || 'hi';
+    const storageKey = `flashcards_${from}_${to}`;
+    const savedCards = loadData(storageKey);
+    return savedCards && savedCards.length > 0 ? savedCards : generateDirectionalCards(from, to);
   };
 
   if (currentMode === 'flashcards') {
@@ -45,93 +48,70 @@ const App = () => {
   }
 
   return (
-    <div style={{ 
-      minHeight: '100vh', 
-      display: 'flex', 
-      flexDirection: 'column', 
-      alignItems: 'center', 
-      justifyContent: 'center',
-      color: 'white',
-      textAlign: 'center',
-      padding: '20px'
-    }}>
-      <div style={{ maxWidth: '600px' }}>
-        <h1 style={{ fontSize: '48px', marginBottom: '20px', textShadow: '2px 2px 4px rgba(0,0,0,0.3)' }}>
-          Guess It! 🎯
-        </h1>
-        <p style={{ fontSize: '20px', marginBottom: '40px', lineHeight: '1.6' }}>
-          Master English-Hindi-Telugu vocabulary with interactive flashcards and spaced repetition
-        </p>
-        
-        <div style={{ 
-          display: 'grid', 
-          gap: '20px', 
-          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-          marginBottom: '40px'
-        }}>
-          <div style={{
-            background: 'rgba(255,255,255,0.1)',
-            padding: '30px',
-            borderRadius: '12px',
-            backdropFilter: 'blur(10px)'
-          }}>
-            <h3 style={{ marginBottom: '15px' }}>📚 Flashcards</h3>
-            <p style={{ marginBottom: '20px', fontSize: '16px' }}>
-              Review words with spaced repetition algorithm
-            </p>
-            <button 
-              className="btn btn-primary" 
-              onClick={() => setCurrentMode('flashcards')}
-              style={{ width: '100%' }}
-            >
-              Start Learning
-            </button>
-          </div>
-          
-          <div style={{
-            background: 'rgba(255,255,255,0.1)',
-            padding: '30px',
-            borderRadius: '12px',
-            backdropFilter: 'blur(10px)'
-          }}>
-            <h3 style={{ marginBottom: '15px' }}>🧠 Quiz</h3>
-            <p style={{ marginBottom: '20px', fontSize: '16px' }}>
-              Test your knowledge with multiple choice questions
-            </p>
-            <button 
-              className="btn btn-success" 
-              onClick={() => setCurrentMode('quiz')}
-              style={{ width: '100%' }}
-            >
-              Take Quiz
-            </button>
-          </div>
+    <div style={homeWrap}>
+      <div style={homeInner}>
+        <h1 style={logo}>PolyGlide<span style={{ fontWeight: 300 }}>.</span></h1>
+        <p style={tag}>Minimal tri‑lingual flashcards. English • Hindi • Telugu.</p>
+        <div style={cardGrid}>
+          <HomeCard title="Flashcards" desc="Study with adaptive spaced repetition" action={() => setCurrentMode('flashcards')} primary />
+          <HomeCard title="Quiz" desc="Quick multiple‑choice recall test" action={() => setCurrentMode('quiz')} />
         </div>
-
-        <div style={{ 
-          background: 'rgba(255,255,255,0.1)',
-          padding: '20px',
-          borderRadius: '12px',
-          backdropFilter: 'blur(10px)'
-        }}>
-          <h3 style={{ marginBottom: '15px' }}>✨ Features</h3>
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
-            gap: '15px',
-            textAlign: 'left'
-          }}>
-            <div>• Spaced repetition learning</div>
-            <div>• English-Hindi-Telugu flashcards</div>
-            <div>• Progress tracking</div>
-            <div>• Interactive quizzes</div>
-            <div>• Pronunciation guides</div>
-            <div>• Adaptive difficulty</div>
-          </div>
-        </div>
+        <div style={footNote}>All language direction pairs supported. Pick inside Flashcards.</div>
       </div>
     </div>
   );
 };
 
 export default App;
+
+// Minimal design tokens
+const homeWrap = {
+  minHeight: '100vh',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: '40px 20px',
+  color: 'white'
+};
+const homeInner = { maxWidth: '760px', width: '100%', textAlign: 'center' };
+const logo = { fontSize: '56px', margin: '0 0 10px', letterSpacing: '-1px', fontWeight: 600 };
+const tag = { fontSize: '18px', margin: '0 0 50px', opacity: 0.9 };
+const cardGrid = { display: 'grid', gap: '22px', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', marginBottom: '40px' };
+const footNote = { fontSize: '12px', opacity: 0.7, letterSpacing: '1px' };
+
+const cardBase = {
+  background: 'linear-gradient(155deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06))',
+  padding: '28px 26px 30px',
+  borderRadius: '18px',
+  backdropFilter: 'blur(12px)',
+  border: '1px solid rgba(255,255,255,0.15)',
+  textAlign: 'left',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '14px',
+  position: 'relative',
+  overflow: 'hidden'
+};
+const heading = { margin: 0, fontSize: '18px', fontWeight: 600, letterSpacing: '.5px' };
+const desc = { margin: 0, fontSize: '14px', lineHeight: 1.5, opacity: 0.85 };
+const btn = (primary=false) => ({
+  marginTop: '4px',
+  background: primary ? '#2563eb' : 'transparent',
+  color: primary ? '#fff' : '#fff',
+  border: primary ? '1px solid #1d4ed8' : '1px solid rgba(255,255,255,0.35)',
+  padding: '10px 18px',
+  borderRadius: '10px',
+  cursor: 'pointer',
+  fontSize: '14px',
+  fontWeight: 500,
+  transition: 'background .25s,border-color .25s'
+});
+
+const HomeCard = ({ title, desc: d, action, primary }) => (
+  <div style={cardBase}>
+    <h3 style={heading}>{title}</h3>
+    <p style={desc}>{d}</p>
+    <div style={{ flexGrow: 1 }}></div>
+    <button style={btn(primary)} onClick={action}>{primary ? 'Start' : 'Open'}</button>
+  </div>
+);

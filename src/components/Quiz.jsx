@@ -74,16 +74,18 @@ const Quiz = ({ flashcards, onQuizComplete }) => {
 
   const currentCard = quizCards[currentQuestionIndex];
   const correctAnswer = currentCard.back.word;
+  const pairLabel = quizCards.length > 0 ? `${quizCards[0].front.language} → ${quizCards[0].back.language}` : '';
 
   return (
     <div className="quiz-container">
       <div style={{ marginBottom: '20px' }}>
+        <span style={{ fontSize: '12px', letterSpacing: '1px', opacity: .75 }}>{pairLabel}</span><br />
         <span>Question {currentQuestionIndex + 1} of {quizCards.length}</span>
         <div style={{ marginTop: '10px' }}>Score: {score}</div>
       </div>
       
       <div className="quiz-question">
-        What is the Hindi/Telugu translation of:
+  Translate to {currentCard.back.language}:
         <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#667eea', margin: '20px 0' }}>
           {currentCard.front.word}
         </div>

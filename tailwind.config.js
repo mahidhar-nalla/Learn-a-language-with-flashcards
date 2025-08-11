@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   content: ['./src/**/*.{js,jsx,ts,tsx}', './index.html'],
   theme: {
     extend: {
@@ -6,12 +6,12 @@ module.exports = {
         'sans': ['Arial', 'sans-serif'],
       },
       colors: {
-        primary: '#667eea',
-        secondary: '#764ba2',
-        success: '#00b894',
-        danger: '#e17055',
-        warning: '#f39c12',
-        info: '#3498db',
+        primary: '#2563eb',
+        secondary: '#1d4ed8',
+        success: '#047857',
+        danger: '#b91c1c',
+        warning: '#f59e0b',
+        info: '#0ea5e9',
       }
     },
   },
